@@ -1,4 +1,4 @@
-# Text classification using Java
+# Text classification using Java and Naive Bayes
 
 Steps:
 A. Preprocessing
