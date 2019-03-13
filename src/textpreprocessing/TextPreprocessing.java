@@ -5,9 +5,16 @@
  */
 package textpreprocessing;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,13 +27,38 @@ public class TextPreprocessing {
      */
     public static void main(String[] args) {
 
-        String kalimat1 = "I love the movie";
-        String kalimat2 = "I hated the movie";
-        String kalimat3 = "a great movie good movie";
-        String kalimat4 = "poor acting";
-        String kalimat5 = "great acting a good movie";
+        File folder = new File(".");
+        File[] listOfFiles = folder.listFiles();
 
-        String kalimat = kalimat1 + " " + kalimat2 + " " + kalimat3 + " " + kalimat4 + " " + kalimat5;
+        String kalimat = "";
+
+        BufferedReader reader;
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                String fileName = listOfFiles[i].getName();
+                if (fileName.startsWith("d")) {
+                    try {
+                        File f = new File(fileName);
+                        reader = new BufferedReader(new FileReader(f));
+                        
+                        String line = reader.readLine();
+                        while(line != null){
+                            System.out.println(line);
+                            line = reader.readLine();
+//                            kalimat += line;
+                        }
+                        
+                        reader.close();
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(TextPreprocessing.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(TextPreprocessing.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+        }
 
         System.out.println(kalimat);
 
