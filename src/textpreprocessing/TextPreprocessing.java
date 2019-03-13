@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -22,10 +23,59 @@ import java.util.logging.Logger;
  */
 public class TextPreprocessing {
 
+    final String COMMA_DELIMITER = ",";
+
+    private List<String> generateListExclusion() {
+        List<String> records = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("exclusion.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(COMMA_DELIMITER);
+                for (String s : values) {
+                    records.add(s);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TextPreprocessing.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TextPreprocessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return records;
+    }
+    
+    private boolean isExcluded(String word, List<String> list){
+        for(String s : list){
+            if(word.equals(s)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    private String stem(String words, List<String> list) {
+        String results = "";
+        String[] listWord = words.split(" ");
+
+        for (String s : listWord) {
+            
+            if(!isExcluded(s, list)){
+                results += " "+s;
+            }
+
+        }
+
+        return results;
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+        TextPreprocessing tp = new TextPreprocessing();
+        List<String> listExclusion = tp.generateListExclusion();
 
         File folder = new File(".");
         File[] listOfFiles = folder.listFiles();
@@ -41,14 +91,16 @@ public class TextPreprocessing {
                     try {
                         File f = new File(fileName);
                         reader = new BufferedReader(new FileReader(f));
-                        
+
                         String line = reader.readLine();
-                        while(line != null){
-                            kalimat += " "+line;
+                        while (line != null) {
+                            String result = line.replaceAll("[^\\dA-Za-z ]", "").toLowerCase();
+                            kalimat += " " + result;
+
                             line = reader.readLine();
-                            
+
                         }
-                        
+
                         reader.close();
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(TextPreprocessing.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,6 +112,8 @@ public class TextPreprocessing {
             }
         }
 
+        kalimat = kalimat.trim();
+        kalimat = tp.stem(kalimat, listExclusion);
         System.out.println(kalimat);
 
         StringTokenizer st = new StringTokenizer(kalimat);
