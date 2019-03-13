@@ -20,10 +20,13 @@ public class TextPreprocessing {
      */
     public static void main(String[] args) {
 
-        String kalimat1 = "Budi makan nasi goreng.";
-        String kalimat2 = "Susi makan telur goreng.";
+        String kalimat1 = "I love the movie";
+        String kalimat2 = "I hated the movie";
+        String kalimat3 = "a great movie good movie";
+        String kalimat4 = "poor acting";
+        String kalimat5 = "great acting a good movie";
 
-        String kalimat = kalimat1 + " " + kalimat2;
+        String kalimat = kalimat1 + " " + kalimat2 + " " + kalimat3 + " " + kalimat4 + " " + kalimat5;
 
         System.out.println(kalimat);
 
@@ -60,9 +63,11 @@ public class TextPreprocessing {
 
         }
 
+        int num = 0;
         for (int i = 0; i < frekuensi.length; i++) {
             if (frekuensi[i] != isVisited) {
-                System.out.println(listKataSemua.get(i) + " : " + frekuensi[i]);
+                num++;
+                System.out.println(num + ": " + listKataSemua.get(i) + " : " + frekuensi[i]);
             }
         }
     }
