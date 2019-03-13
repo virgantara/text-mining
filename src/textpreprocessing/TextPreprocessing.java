@@ -44,9 +44,9 @@ public class TextPreprocessing {
                         
                         String line = reader.readLine();
                         while(line != null){
-                            System.out.println(line);
+                            kalimat += " "+line;
                             line = reader.readLine();
-//                            kalimat += line;
+                            
                         }
                         
                         reader.close();
